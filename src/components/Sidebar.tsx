@@ -1,7 +1,6 @@
 'use client';
 
 import { 
-  FileText, 
   Edit3, 
   Type, 
   Image as ImageIcon, 
