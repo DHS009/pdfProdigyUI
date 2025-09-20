@@ -5,6 +5,7 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import PDFViewer from './PDFViewer';
 import FileUpload from './FileUpload';
+import Footer from './Footer';
 
 interface PDFDocument {
   file: File;
@@ -26,7 +27,7 @@ export default function PDFEditor() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
       <Header 
         currentPDF={currentPDF}
@@ -49,6 +50,9 @@ export default function PDFEditor() {
           )}
         </main>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
