@@ -2,12 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { ZoomIn, ZoomOut, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
-import * as pdfjsLib from 'pdfjs-dist';
 
-// Set up the worker
-if (typeof window !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-}
+// Dynamic import for PDF.js to avoid SSR issues
+let pdfjsLib: any = null;
 
 interface PDFViewerProps {
   pdfUrl: string;
@@ -15,15 +12,22 @@ interface PDFViewerProps {
 
 export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null);
+  const [pdfDoc, setPdfDoc] = useState<any | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [scale, setScale] = useState(1.2);
   const [loading, setLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    loadPDF();
-  }, [pdfUrl]);
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient && pdfjsLib) {
+      loadPDF();
+    }
+  }, [pdfUrl, isClient]);
 
   useEffect(() => {
     if (pdfDoc) {
@@ -32,6 +36,19 @@ export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
   }, [pdfDoc, currentPage, scale]);
 
   const loadPDF = async () => {
+    if (!pdfjsLib) {
+      // Wait for PDF.js to load
+      try {
+        const pdfjs = await import('pdfjs-dist');
+        pdfjsLib = pdfjs;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+      } catch (error) {
+        console.error('Error loading PDF.js:', error);
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
       setLoading(true);
       const loadingTask = pdfjsLib.getDocument(pdfUrl);
@@ -92,7 +109,7 @@ export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
     setScale(Math.max(scale / 1.2, 0.5));
   };
 
-  if (loading) {
+  if (!isClient || loading) {
     return (
       <div className="h-full flex items-center justify-center">
         <div className="text-center">
