@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import Navigation from './Navigation';
-import Sidebar from './Sidebar';
-import PDFViewer from './PDFViewer';
-import FileUpload from './FileUpload';
-import Footer from './Footer';
+import Navigation from './shared/Navigation';
+import Sidebar from './shared/Sidebar';
+import PDFViewer from './shared/PDFViewer';
+import FileUpload from './shared/FileUpload';
+import Footer from './shared/Footer';
 
 interface PDFDocument {
   file: File;

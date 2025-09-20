@@ -22,8 +22,8 @@ import {
   Lock
 } from 'lucide-react';
 import Link from 'next/link';
-import Navigation from './Navigation';
-import Footer from './Footer';
+import Navigation from './shared/Navigation';
+import Footer from './shared/Footer';
 
 interface Tool {
   icon: any;
@@ -53,37 +53,37 @@ export default function HomePage() {
       icon: Merge,
       title: 'Merge PDF',
       description: 'Combine multiple PDFs into one unified document',
-      href: '#'
+      href: '/merge-pdf'
     },
     {
       icon: Split,
       title: 'Split PDF', 
       description: 'Separate pages or extract specific sections',
-      href: '#'
+      href: '/split-pdf'
     },
     {
       icon: Minimize2,
       title: 'Compress PDF',
       description: 'Reduce file size without losing quality',
-      href: '#'
+      href: '/compress-pdf'
     },
     {
       icon: Edit3,
       title: 'Edit PDF',
       description: 'Add text, images, shapes and annotations',
-      href: '#'
+      href: '/editor'
     },
     {
       icon: FileText,
       title: 'PDF to Word',
       description: 'Convert PDFs to editable Word documents',
-      href: '#'
+      href: '/pdf-to-word'
     },
     {
       icon: Download,
       title: 'Word to PDF',
       description: 'Transform Word documents to PDF format',
-      href: '#'
+      href: '/word-to-pdf'
     }
   ];
 
@@ -222,7 +222,11 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {popularTools.map((tool, index) => (
-              <div key={index} className="group bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 hover:border-blue-200 cursor-pointer">
+              <Link 
+                key={index} 
+                href={tool.href}
+                className="group bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 hover:border-blue-200 cursor-pointer"
+              >
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-200">
                     <tool.icon className="w-6 h-6 text-blue-600 group-hover:text-white" />
@@ -237,7 +241,7 @@ export default function HomePage() {
                   </div>
                   <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 opacity-0 group-hover:opacity-100 transition-all duration-200 transform group-hover:translate-x-1" />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 

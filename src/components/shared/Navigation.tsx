@@ -39,17 +39,20 @@ export default function Navigation() {
                   <Link href="/editor" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                     PDF Editor
                   </Link>
-                  <Link href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  <Link href="/merge-pdf" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                     Merge PDF
                   </Link>
-                  <Link href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  <Link href="/split-pdf" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                     Split PDF
                   </Link>
-                  <Link href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  <Link href="/compress-pdf" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                     Compress PDF
                   </Link>
-                  <Link href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                    Convert PDF
+                  <Link href="/pdf-to-word" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                    PDF to Word
+                  </Link>
+                  <Link href="/word-to-pdf" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                    Word to PDF
                   </Link>
                 </div>
               )}
