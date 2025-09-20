@@ -5,6 +5,9 @@ import { Upload, Plus, X, Download, ArrowUp, ArrowDown } from 'lucide-react';
 import Navigation from '@/components/shared/Navigation';
 import Footer from '@/components/shared/Footer';
 
+// Export metadata for SEO
+export { metadata } from './metadata';
+
 interface PDFFile {
   id: string;
   file: File;
