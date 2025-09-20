@@ -5,9 +5,6 @@ import { Upload, Download, FileText, Split } from 'lucide-react';
 import Navigation from '@/components/shared/Navigation';
 import Footer from '@/components/shared/Footer';
 
-// Export metadata for SEO
-export { metadata } from './metadata';
-
 interface SplitOption {
   type: 'pages' | 'range' | 'size';
   label: string;
