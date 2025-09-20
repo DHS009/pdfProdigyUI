@@ -19,7 +19,24 @@ import {
   Globe,
   Smartphone,
   Cloud,
-  Lock
+  Lock,
+  Image,
+  RotateCw,
+  Unlock,
+  Eye,
+  Hash,
+  Scan,
+  GitCompare,
+  Crop,
+  Presentation,
+  Table,
+  Code,
+  FileSignature,
+  Droplets,
+  LayoutGrid,
+  Archive,
+  FileCheck,
+  Wrench
 } from 'lucide-react';
 import Link from 'next/link';
 import Navigation from './shared/Navigation';
@@ -84,6 +101,132 @@ export default function HomePage() {
       title: 'Word to PDF',
       description: 'Transform Word documents to PDF format',
       href: '/word-to-pdf'
+    },
+    {
+      icon: Presentation,
+      title: 'PDF to PowerPoint',
+      description: 'Convert PDF pages to PowerPoint slides',
+      href: '/pdf-to-powerpoint'
+    },
+    {
+      icon: Table,
+      title: 'PDF to Excel',
+      description: 'Extract tables and data to Excel spreadsheets',
+      href: '/pdf-to-excel'
+    },
+    {
+      icon: Presentation,
+      title: 'PowerPoint to PDF',
+      description: 'Convert presentations to PDF format',
+      href: '/powerpoint-to-pdf'
+    },
+    {
+      icon: Table,
+      title: 'Excel to PDF',
+      description: 'Transform spreadsheets to PDF documents',
+      href: '/excel-to-pdf'
+    },
+    {
+      icon: Image,
+      title: 'PDF to JPG',
+      description: 'Convert PDF pages to high-quality images',
+      href: '/pdf-to-jpg'
+    },
+    {
+      icon: Image,
+      title: 'JPG to PDF',
+      description: 'Create PDFs from your image files',
+      href: '/jpg-to-pdf'
+    },
+    {
+      icon: FileSignature,
+      title: 'Sign PDF',
+      description: 'Add digital signatures to your documents',
+      href: '/sign-pdf'
+    },
+    {
+      icon: Droplets,
+      title: 'Watermark',
+      description: 'Add text or image watermarks to PDFs',
+      href: '/watermark'
+    },
+    {
+      icon: RotateCw,
+      title: 'Rotate PDF',
+      description: 'Rotate pages to correct orientation',
+      href: '/rotate-pdf'
+    },
+    {
+      icon: Code,
+      title: 'HTML to PDF',
+      description: 'Convert web pages and HTML to PDF',
+      href: '/html-to-pdf'
+    },
+    {
+      icon: Unlock,
+      title: 'Unlock PDF',
+      description: 'Remove password protection from PDFs',
+      href: '/unlock-pdf'
+    },
+    {
+      icon: Lock,
+      title: 'Protect PDF',
+      description: 'Add password protection and permissions',
+      href: '/protect-pdf'
+    },
+    {
+      icon: LayoutGrid,
+      title: 'Organize PDF',
+      description: 'Reorder, delete, and reorganize pages',
+      href: '/organize-pdf'
+    },
+    {
+      icon: Archive,
+      title: 'PDF to PDF/A',
+      description: 'Convert to archival PDF/A format',
+      href: '/pdf-to-pdfa'
+    },
+    {
+      icon: Wrench,
+      title: 'Repair PDF',
+      description: 'Fix corrupted or damaged PDF files',
+      href: '/repair-pdf'
+    },
+    {
+      icon: Hash,
+      title: 'Page numbers',
+      description: 'Add page numbers and headers/footers',
+      href: '/page-numbers'
+    },
+    {
+      icon: Scan,
+      title: 'Scan to PDF',
+      description: 'Create PDFs from scanned documents',
+      href: '/scan-to-pdf'
+    },
+    {
+      icon: Eye,
+      title: 'OCR PDF',
+      description: 'Extract text from scanned documents',
+      href: '/ocr-pdf'
+    },
+    {
+      icon: GitCompare,
+      title: 'Compare PDF',
+      description: 'Compare two PDF documents for differences',
+      href: '/compare-pdf'
+    },
+    {
+      icon: FileCheck,
+      title: 'Redact PDF',
+      description: 'Remove sensitive information permanently',
+      href: '/redact-pdf'
+    },
+    {
+      icon: Crop,
+      title: 'Crop PDF',
+      description: 'Trim pages and remove unwanted areas',
+      href: '/crop-pdf'
     }
   ];
 
@@ -197,7 +340,7 @@ export default function HomePage() {
               <div className="text-gray-600">Happy Users</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">25+</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">27</div>
               <div className="text-gray-600">PDF Tools</div>
             </div>
             <div className="text-center">
@@ -247,7 +390,7 @@ export default function HomePage() {
 
           <div className="text-center">
             <button className="px-6 py-3 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-200 font-semibold">
-              View All 25+ Tools
+              View All 27 Tools
             </button>
           </div>
         </div>
