@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Upload, Download, Eye, FileText, Settings, Zap, RefreshCw, CheckCircle, AlertTriangle, EyeOff, Lock, Shield, Search, Edit, MousePointer, Square, Type, Palette, Trash2 } from 'lucide-react';
+import { Upload, Download, FileText, Settings, Zap, CheckCircle, AlertTriangle, EyeOff, Lock, Shield, Search, Edit, MousePointer, Type, Palette, Trash2 } from 'lucide-react';
 import Navigation from '@/components/shared/Navigation';
 import Footer from '@/components/shared/Footer';
 
@@ -122,7 +122,6 @@ export default function RedactPdfPage() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [keywordInput, setKeywordInput] = useState('');
   const [patternInput, setPatternInput] = useState('');
-  const [selectedTool, setSelectedTool] = useState<'select' | 'redact'>('select');
 
   const redactionModes = [
     {
@@ -296,7 +295,6 @@ export default function RedactPdfPage() {
       
       const results: RedactionResult[] = pdfFiles.map((file) => {
         const processingTime = Math.floor(Math.random() * 45) + 20;
-        const totalRedactions = Math.floor(Math.random() * 25) + file.estimatedRedactions;
         
         // Simulate different types of redactions found
         const redactionsByType = {
@@ -313,7 +311,7 @@ export default function RedactPdfPage() {
           custom: redactionSettings.customPatterns.length > 0 ? Math.floor(Math.random() * 3) : 0
         };
         
-        const totalFound = Object.values(redactionsByType).reduce((sum, count) => sum + count, 0);
+        const totalFound = Object.values(redactionsByType).reduce((sum: number, count: number) => sum + count, 0);
         const securityScore = Math.min(100, Math.floor((totalFound / Math.max(1, file.estimatedRedactions)) * 100));
         
         // Generate audit log

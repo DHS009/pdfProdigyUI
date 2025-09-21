@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Upload, Download, Eye, FileText, Settings, Zap, RefreshCw, CheckCircle, AlertTriangle, Crop, Square, MousePointer, Grid3X3, Move, RotateCcw, Maximize2, Minimize2 } from 'lucide-react';
+import { Upload, Download, Eye, FileText, Settings, Zap, CheckCircle, AlertTriangle, Crop, Square, MousePointer, Grid3X3, Move, RotateCcw, Maximize2, Minimize2 } from 'lucide-react';
 import Navigation from '@/components/shared/Navigation';
 import Footer from '@/components/shared/Footer';
 
@@ -110,8 +110,6 @@ export default function CropPdfPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [cropResults, setCropResults] = useState<CropResult[]>([]);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [selectedTool, setSelectedTool] = useState<'select' | 'crop'>('select');
-  const [previewMode, setPreviewMode] = useState<'before' | 'after' | 'split'>('split');
 
   const cropModes = [
     {

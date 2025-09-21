@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Upload, Download, Eye, FileText, Settings, Zap, RefreshCw, CheckCircle, AlertTriangle, ArrowLeftRight, Search, Filter, GitCompare, Plus, Minus, Edit, Move } from 'lucide-react';
+import { Upload, Download, Eye, FileText, Settings, Zap, CheckCircle, AlertTriangle, ArrowLeftRight, Search, Filter, GitCompare, Plus, Minus, Edit, Move } from 'lucide-react';
 import Navigation from '@/components/shared/Navigation';
 import Footer from '@/components/shared/Footer';
 
@@ -271,10 +271,7 @@ export default function ComparePdfPage() {
         'Paragraph deleted',
         'Section moved to different location',
         'Font or style change applied'
-      ];
-      
-      const changeDetails: ChangeDetail[] = Array.from({ length: totalChanges }, (_, i) => ({
-        page: Math.floor(Math.random() * Math.min(originalFile.totalPages, revisedFile.totalPages)) + 1,
+      ];        const changeDetails: ChangeDetail[] = Array.from({ length: totalChanges }, (_, index) => ({          page: Math.floor(Math.random() * Math.min(originalFile.totalPages, revisedFile.totalPages)) + 1,
         type: changeTypes[Math.floor(Math.random() * changeTypes.length)],
         description: descriptions[Math.floor(Math.random() * descriptions.length)],
         location: locations[Math.floor(Math.random() * locations.length)],

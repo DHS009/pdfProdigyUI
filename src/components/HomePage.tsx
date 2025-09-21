@@ -43,14 +43,14 @@ import Navigation from './shared/Navigation';
 import Footer from './shared/Footer';
 
 interface Tool {
-  icon: any;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   title: string;
   description: string;
   href: string;
 }
 
 interface Feature {
-  icon: any;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   title: string;
   description: string;
 }
@@ -404,7 +404,7 @@ export default function HomePage() {
               Why Choose PDF Prodigy?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We've built the most powerful and user-friendly PDF platform on the web.
+              We&apos;ve built the most powerful and user-friendly PDF platform on the web.
             </p>
           </div>
 
@@ -497,7 +497,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-gray-700 mb-4 italic">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </p>
                 <div>
                   <div className="font-semibold text-gray-900">{testimonial.name}</div>

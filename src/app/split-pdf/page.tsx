@@ -231,7 +231,7 @@ export default function SplitPdfPage() {
               <li>Upload the PDF file you want to split</li>
               <li>Choose your preferred splitting method</li>
               <li>Configure the split settings (pages, ranges, or size)</li>
-              <li>Click "Split PDF" to create separate files</li>
+              <li>Click &quot;Split PDF&quot; to create separate files</li>
               <li>Download your split PDF files</li>
             </ol>
           </div>

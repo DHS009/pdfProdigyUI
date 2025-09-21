@@ -10,7 +10,7 @@ interface RotationOption {
   label: string;
   description: string;
   features: string[];
-  icon: any;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   recommended?: boolean;
 }
 

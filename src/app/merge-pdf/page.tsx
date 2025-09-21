@@ -230,7 +230,7 @@ export default function MergePdfPage() {
             <ol className="list-decimal list-inside space-y-2 text-blue-800">
               <li>Upload multiple PDF files using the upload area above</li>
               <li>Arrange the files in the order you want them to appear in the final PDF</li>
-              <li>Click "Merge PDFs" to combine all files into one document</li>
+              <li>Click &quot;Merge PDFs&quot; to combine all files into one document</li>
               <li>Download your merged PDF file</li>
             </ol>
           </div>
