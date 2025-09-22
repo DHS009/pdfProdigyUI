@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Navigation from './shared/Navigation';
 import Sidebar from './shared/Sidebar';
-import PDFViewer from './shared/PDFViewer';
+import ReliablePDFEditor from './ReliablePDFEditor';
 import FileUpload from './shared/FileUpload';
 import Footer from './shared/Footer';
 import { apiService, FileInfo } from '../services/api';
@@ -129,6 +129,34 @@ export default function PDFEditor() {
     }));
   };
 
+  const handleAnnotationSave = async (annotations: any[]) => {
+    if (!currentPDF?.fileId) return;
+    
+    try {
+      setEditorState(prev => ({ ...prev, isProcessing: true }));
+      
+      console.log('Saving annotations for file:', currentPDF.fileId);
+      console.log('Annotations:', annotations);
+      
+      // Save annotations to backend
+      const response = await apiService.saveAnnotations(currentPDF.fileId, annotations);
+      
+      console.log('Annotations saved successfully:', response);
+      
+      // Clear any existing errors
+      setEditorState(prev => ({ ...prev, error: null }));
+      
+    } catch (error) {
+      console.error('Error saving annotations:', error);
+      setEditorState(prev => ({
+        ...prev,
+        error: error instanceof Error ? error.message : 'Failed to save annotations'
+      }));
+    } finally {
+      setEditorState(prev => ({ ...prev, isProcessing: false }));
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Navigation */}
@@ -159,10 +187,11 @@ export default function PDFEditor() {
           )}
           
           {currentPDF ? (
-            <PDFViewer 
+            <ReliablePDFEditor 
               pdfUrl={currentPDF.url} 
               activeTool={editorState.activeTool}
               fileId={currentPDF.fileId}
+              onSave={handleAnnotationSave}
             />
           ) : (
             <FileUpload 

@@ -25,6 +25,21 @@ export interface ApiError {
   status_code?: number;
 }
 
+export interface Annotation {
+  id: string;
+  type: string;
+  page: number;
+  data: any;
+  position: any;
+}
+
+export interface SaveAnnotationsResponse {
+  success: boolean;
+  message: string;
+  file_id: string;
+  annotation_count: number;
+}
+
 class ApiService {
   private baseUrl: string;
 
@@ -119,6 +134,85 @@ class ApiService {
       return result;
     } catch (error) {
       console.error('Health check error:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Save annotations for a PDF file
+   */
+  async saveAnnotations(fileId: string, annotations: Annotation[]): Promise<SaveAnnotationsResponse> {
+    console.log('Saving annotations for file:', fileId);
+    console.log('Annotations:', annotations);
+    
+    try {
+      const response = await fetch(`${this.baseUrl}/files/${fileId}/annotations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          file_id: fileId,
+          annotations: annotations
+        }),
+      });
+
+      console.log('Save annotations response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to save annotations');
+      }
+
+      const result = await response.json();
+      console.log('Annotations saved successfully:', result);
+      return result;
+    } catch (error) {
+      console.error('Save annotations error:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get annotations for a PDF file
+   */
+  async getAnnotations(fileId: string): Promise<{ file_id: string; annotations: Annotation[]; message?: string }> {
+    console.log('Getting annotations for file:', fileId);
+    
+    try {
+      const response = await fetch(`${this.baseUrl}/files/${fileId}/annotations`);
+
+      if (!response.ok) {
+        throw new Error('Failed to get annotations');
+      }
+
+      const result = await response.json();
+      console.log('Got annotations:', result);
+      return result;
+    } catch (error) {
+      console.error('Get annotations error:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Export PDF with annotations
+   */
+  async exportPDF(fileId: string): Promise<Blob> {
+    console.log('Exporting PDF with annotations for file:', fileId);
+    
+    try {
+      const response = await fetch(`${this.baseUrl}/files/${fileId}/export`, {
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to export PDF');
+      }
+
+      return await response.blob();
+    } catch (error) {
+      console.error('Export PDF error:', error);
       throw error;
     }
   }
