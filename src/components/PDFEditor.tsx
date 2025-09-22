@@ -1,29 +1,113 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navigation from './shared/Navigation';
 import Sidebar from './shared/Sidebar';
 import PDFViewer from './shared/PDFViewer';
 import FileUpload from './shared/FileUpload';
 import Footer from './shared/Footer';
+import { apiService, FileInfo } from '../services/api';
 
 interface PDFDocument {
   file: File;
   url: string;
   name: string;
+  fileId?: string;
+  metadata?: FileInfo;
+}
+
+interface EditorState {
+  activeTool: string | null;
+  isUploading: boolean;
+  isProcessing: boolean;
+  error: string | null;
+  backendConnected: boolean;
 }
 
 export default function PDFEditor() {
   const [currentPDF, setCurrentPDF] = useState<PDFDocument | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [editorState, setEditorState] = useState<EditorState>({
+    activeTool: null,
+    isUploading: false,
+    isProcessing: false,
+    error: null,
+    backendConnected: false,
+  });
 
-  const handleFileUpload = (file: File) => {
-    const url = URL.createObjectURL(file);
-    setCurrentPDF({
-      file,
-      url,
-      name: file.name
-    });
+  // Check backend connection on component mount
+  useEffect(() => {
+    const checkBackendConnection = async () => {
+      try {
+        console.log('Checking backend connection...');
+        await apiService.healthCheck();
+        setEditorState(prev => ({ ...prev, backendConnected: true }));
+        console.log('Backend connection successful');
+      } catch (error) {
+        console.error('Backend connection failed:', error);
+        setEditorState(prev => ({ 
+          ...prev, 
+          backendConnected: false,
+          error: 'Cannot connect to backend server'
+        }));
+      }
+    };
+
+    checkBackendConnection();
+  }, []);
+
+  const handleFileUpload = async (file: File) => {
+    // Clear any existing error
+    setEditorState(prev => ({ ...prev, error: null, isUploading: true }));
+
+    try {
+      // Validate file before uploading
+      const validation = await apiService.validateFile(file.name);
+      if (!validation.is_valid) {
+        throw new Error(validation.message);
+      }
+
+      // Create local URL for immediate preview
+      const url = URL.createObjectURL(file);
+      setCurrentPDF({
+        file,
+        url,
+        name: file.name
+      });
+
+      // Upload to backend
+      const uploadResponse = await apiService.uploadFile(file);
+      
+      if (uploadResponse.success && uploadResponse.files.length > 0) {
+        const fileInfo = uploadResponse.files[0];
+        
+        // Update with backend file info
+        setCurrentPDF(prev => prev ? {
+          ...prev,
+          fileId: fileInfo.file_id,
+          metadata: fileInfo
+        } : null);
+        
+        console.log('File uploaded successfully:', fileInfo);
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      setEditorState(prev => ({
+        ...prev,
+        error: error instanceof Error ? error.message : 'Upload failed'
+      }));
+    } finally {
+      setEditorState(prev => ({ ...prev, isUploading: false }));
+    }
+  };
+
+  const handleToolSelect = (toolName: string) => {
+    setEditorState(prev => ({
+      ...prev,
+      activeTool: prev.activeTool === toolName ? null : toolName
+    }));
   };
 
   return (
@@ -34,7 +118,11 @@ export default function PDFEditor() {
       <div className="flex-1 flex overflow-hidden">
         {/* Sidebar */}
         {sidebarOpen && (
-          <Sidebar currentPDF={currentPDF} />
+          <Sidebar 
+            currentPDF={currentPDF} 
+            activeTool={editorState.activeTool}
+            onToolSelect={handleToolSelect}
+          />
         )}
         
         {/* Main Content */}
@@ -52,9 +140,18 @@ export default function PDFEditor() {
           )}
           
           {currentPDF ? (
-            <PDFViewer pdfUrl={currentPDF.url} />
+            <PDFViewer 
+              pdfUrl={currentPDF.url} 
+              activeTool={editorState.activeTool}
+              fileId={currentPDF.fileId}
+            />
           ) : (
-            <FileUpload onFileUpload={handleFileUpload} />
+            <FileUpload 
+              onFileUpload={handleFileUpload} 
+              isUploading={editorState.isUploading}
+              error={editorState.error}
+              backendConnected={editorState.backendConnected}
+            />
           )}
         </main>
         

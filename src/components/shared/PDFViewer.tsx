@@ -8,9 +8,11 @@ let pdfjsLib: typeof import('pdfjs-dist') | null = null;
 
 interface PDFViewerProps {
   pdfUrl: string;
+  activeTool?: string | null;
+  fileId?: string;
 }
 
-export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
+export default function PDFViewer({ pdfUrl, activeTool, fileId }: PDFViewerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [pdfDoc, setPdfDoc] = useState<any>(null);
@@ -126,6 +128,13 @@ export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
       {/* Toolbar */}
       <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-4">
+          {/* Active Tool Indicator */}
+          {activeTool && (
+            <div className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+              {activeTool.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())} Mode
+            </div>
+          )}
+          
           <div className="flex items-center space-x-2">
             <button
               onClick={goToPrevPage}

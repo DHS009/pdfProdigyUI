@@ -15,21 +15,25 @@ interface PDFDocument {
   file: File;
   url: string;
   name: string;
+  fileId?: string;
+  metadata?: any;
 }
 
 interface SidebarProps {
   currentPDF: PDFDocument | null;
+  activeTool: string | null;
+  onToolSelect: (toolName: string) => void;
 }
 
-export default function Sidebar({ currentPDF }: SidebarProps) {
+export default function Sidebar({ currentPDF, activeTool, onToolSelect }: SidebarProps) {
   const tools = [
-    { icon: Edit3, label: 'Edit Text', active: false },
-    { icon: Type, label: 'Add Text', active: false },
-    { icon: ImageIcon, label: 'Add Image', active: false },
-    { icon: MessageSquare, label: 'Annotations', active: false },
-    { icon: Scissors, label: 'Split PDF', active: false },
-    { icon: Copy, label: 'Merge PDF', active: false },
-    { icon: Layers, label: 'Pages', active: true },
+    { icon: Edit3, label: 'Edit Text', id: 'edit-text' },
+    { icon: Type, label: 'Add Text', id: 'add-text' },
+    { icon: ImageIcon, label: 'Add Image', id: 'add-image' },
+    { icon: MessageSquare, label: 'Annotations', id: 'annotations' },
+    { icon: Scissors, label: 'Split PDF', id: 'split-pdf' },
+    { icon: Copy, label: 'Merge PDF', id: 'merge-pdf' },
+    { icon: Layers, label: 'Pages', id: 'pages' },
   ];
 
   return (
@@ -38,11 +42,12 @@ export default function Sidebar({ currentPDF }: SidebarProps) {
       <div className="p-4 border-b border-gray-200">
         <h2 className="text-sm font-semibold text-gray-900 mb-3">Tools</h2>
         <div className="space-y-1">
-          {tools.map((tool, index) => (
+          {tools.map((tool) => (
             <button
-              key={index}
+              key={tool.id}
+              onClick={() => onToolSelect(tool.id)}
               className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                tool.active 
+                activeTool === tool.id
                   ? 'bg-blue-50 text-blue-700 border border-blue-200' 
                   : 'text-gray-700 hover:bg-gray-50'
               }`}
@@ -66,8 +71,22 @@ export default function Sidebar({ currentPDF }: SidebarProps) {
       {currentPDF && (
         <div className="flex-1 p-4">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">Pages</h3>
+          
+          {/* File Info */}
+          <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+            <div className="text-xs text-gray-600 space-y-1">
+              <div><strong>File:</strong> {currentPDF.name}</div>
+              {currentPDF.metadata && (
+                <>
+                  <div><strong>Size:</strong> {(currentPDF.metadata.size / 1024 / 1024).toFixed(2)} MB</div>
+                  <div><strong>ID:</strong> {currentPDF.fileId}</div>
+                </>
+              )}
+            </div>
+          </div>
+          
           <div className="space-y-2">
-            {/* Page thumbnails will be rendered here */}
+            {/* TODO: Load real page thumbnails from backend */}
             <div className="bg-gray-100 rounded-lg p-4 text-center text-sm text-gray-500">
               Page thumbnails will appear here
             </div>
