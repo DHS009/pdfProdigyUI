@@ -17,6 +17,7 @@ export interface FileInfo {
   size: number;
   mime_type: string;
   file_id: string;
+  file_url: string;
 }
 
 export interface ApiError {

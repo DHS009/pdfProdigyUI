@@ -67,28 +67,47 @@ export default function PDFEditor() {
         throw new Error(validation.message);
       }
 
-      // Create local URL for immediate preview
-      const url = URL.createObjectURL(file);
-      setCurrentPDF({
-        file,
-        url,
-        name: file.name
-      });
-
-      // Upload to backend
+      // Upload to backend first (simulating S3 upload)
       const uploadResponse = await apiService.uploadFile(file);
       
       if (uploadResponse.success && uploadResponse.files.length > 0) {
         const fileInfo = uploadResponse.files[0];
         
-        // Update with backend file info
-        setCurrentPDF(prev => prev ? {
-          ...prev,
-          fileId: fileInfo.file_id,
-          metadata: fileInfo
-        } : null);
-        
         console.log('File uploaded successfully:', fileInfo);
+        console.log('Backend URL:', fileInfo.file_url);
+        
+        // Fetch the file from backend and create a blob URL for PDF.js
+        // This simulates downloading from S3 for local processing
+        try {
+          const response = await fetch(fileInfo.file_url);
+          if (!response.ok) {
+            throw new Error('Failed to fetch PDF from backend');
+          }
+          
+          const blob = await response.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          
+          setCurrentPDF({
+            file,
+            url: blobUrl, // Use blob URL for PDF.js compatibility
+            name: file.name,
+            fileId: fileInfo.file_id,
+            metadata: fileInfo
+          });
+          
+          console.log('PDF ready for viewing with blob URL');
+        } catch (fetchError) {
+          console.error('Error fetching PDF from backend:', fetchError);
+          // Fallback to original blob URL if backend fetch fails
+          const fallbackUrl = URL.createObjectURL(file);
+          setCurrentPDF({
+            file,
+            url: fallbackUrl,
+            name: file.name,
+            fileId: fileInfo.file_id,
+            metadata: fileInfo
+          });
+        }
       } else {
         throw new Error('Upload failed');
       }
